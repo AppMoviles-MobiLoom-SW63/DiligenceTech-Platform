@@ -1,0 +1,64 @@
+package com.deltatech.diligencetech.platform.duediligencemanagement.interfaces.rest;
+
+import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetAllProjectsQuery;
+import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetProjectByIdQuery;
+import com.deltatech.diligencetech.platform.duediligencemanagement.domain.services.ProjectCommandService;
+import com.deltatech.diligencetech.platform.duediligencemanagement.domain.services.ProjectQueryService;
+import com.deltatech.diligencetech.platform.duediligencemanagement.interfaces.rest.resources.*;
+import com.deltatech.diligencetech.platform.duediligencemanagement.interfaces.rest.transform.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
+@RestController
+@RequestMapping(value = "/api/v1/due-diligence-projects", produces = APPLICATION_JSON_VALUE)
+@Tag(name = "Due Diligence Projects", description = "Due Diligence Management Endpoints")
+public class ProjectController {
+    private final ProjectCommandService projectCommandService;
+    private final ProjectQueryService projectQueryService;
+
+    public ProjectController(ProjectCommandService projectCommandService, ProjectQueryService projectQueryService) {
+        this.projectCommandService = projectCommandService;
+        this.projectQueryService = projectQueryService;
+    }
+
+    @PostMapping
+    public ResponseEntity<ProjectResource> createDueDiligenceProject(@RequestBody CreateProjectResource createProjectResource) {
+        var createDueDiligenceProjectCommand = CreateProjectCommandFromResourceAssembler.toCommandFromResource(createProjectResource);
+        var projectId = projectCommandService.handle(createDueDiligenceProjectCommand);
+        if(projectId.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        var getDueDiligenceProjectByIdQuery = new GetProjectByIdQuery(projectId.get());
+        var dueDiligenceProject = projectQueryService.handle(getDueDiligenceProjectByIdQuery);
+        if (dueDiligenceProject.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        var dueDiligenceProjectResource = ProjectResourceFromEntityAssembler.toResourceFromEntity(dueDiligenceProject.get());
+        return new ResponseEntity<>(dueDiligenceProjectResource, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ProjectResource> getDueDiligenceProjectById(@PathVariable Long projectId) {
+        var getDueDiligenceProjectByIdQuery = new GetProjectByIdQuery(projectId);
+        var dueDiligenceProject = projectQueryService.handle(getDueDiligenceProjectByIdQuery);
+        if (dueDiligenceProject.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        var dueDiligenceProjectResource = ProjectResourceFromEntityAssembler.toResourceFromEntity(dueDiligenceProject.get());
+        return ResponseEntity.ok(dueDiligenceProjectResource);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProjectResource>> getAllDueDiligenceProjects() {
+        var getAllDueDiligenceProjectsQuery = new GetAllProjectsQuery();
+        var dueDiligenceProjects = projectQueryService.handle(getAllDueDiligenceProjectsQuery);
+        var dueDiligenceProjectResources = dueDiligenceProjects.stream().map(ProjectResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(dueDiligenceProjectResources);
+    }
+}
