@@ -37,6 +37,7 @@ public class Folder extends AuditableAbstractAggregateRoot<Folder> {
     private Area parent;
 
     public Folder(CreateFolderCommand command) {
+
         this.innerFiles = new FilesList();
         this.priority = FolderPriority.LOW;
         this.buyStatus = FolderStatus.NOT_STARTED;
@@ -51,15 +52,19 @@ public class Folder extends AuditableAbstractAggregateRoot<Folder> {
 
 
     public Folder() {
+
         this.innerFiles = new FilesList();
         this.priority = FolderPriority.LOW;
         this.buyStatus = FolderStatus.NOT_STARTED;
         this.sellStatus = FolderStatus.NOT_STARTED;
         this.name = "";
+
     }
 
     public Folder updateName(String name) {
+
         this.name = name;
         return this;
+
     }
 }

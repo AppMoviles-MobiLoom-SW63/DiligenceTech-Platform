@@ -29,8 +29,10 @@ public class Document extends AuditableModel {
     private Folder folder;
 
     public Document(CreateDocumentCommand command) {
+
         this.filename = command.filename();
         this.fileUrl = command.fileUrl();
+
     }
 
     public Document() {
@@ -42,8 +44,10 @@ public class Document extends AuditableModel {
     }
 
     public Document updateName(String filename) {
+
         this.filename = filename;
         return this;
+
     }
 
 

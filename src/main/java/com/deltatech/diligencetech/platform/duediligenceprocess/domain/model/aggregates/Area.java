@@ -24,9 +24,11 @@ public class Area extends AuditableAbstractAggregateRoot<Area> {
     private String name;
 
     public Area(CreateAreaCommand command) {
+
         this.projectId = command.projectId();
         this.name = command.name();
         this.folders = new FoldersList();
+
     }
 
     public Area() {
@@ -34,7 +36,9 @@ public class Area extends AuditableAbstractAggregateRoot<Area> {
     }
 
     public Area updateName(String name) {
+
         this.name = name;
         return this;
+
     }
 }
