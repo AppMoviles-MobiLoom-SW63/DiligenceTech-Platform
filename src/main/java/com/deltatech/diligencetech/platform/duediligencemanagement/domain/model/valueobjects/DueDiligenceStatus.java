@@ -4,4 +4,5 @@ public enum DueDiligenceStatus {
     PENDING,
     IN_PROGRESS,
     COMPLETED
+
 }

@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 @Entity
 public class Member extends AuditableModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,4 +37,5 @@ public class Member extends AuditableModel {
         this.hasAcceptedInvitation = false;
         this.project = project;
     }
+
 }

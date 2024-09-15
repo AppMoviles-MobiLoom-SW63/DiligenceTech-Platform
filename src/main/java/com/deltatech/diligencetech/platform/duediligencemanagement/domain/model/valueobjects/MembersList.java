@@ -16,4 +16,5 @@ public class MembersList {
     public void addMember(Member member) {
         this.members.add(member);
     }
+
 }
