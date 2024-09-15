@@ -6,6 +6,7 @@ import com.deltatech.diligencetech.platform.duediligenceprocess.domain.model.com
 import java.util.Optional;
 
 public interface FolderCommandService {
+
   Long handle(CreateFolderCommand command);
   Optional<Folder> handle(UpdateFolderNameCommand command);
 

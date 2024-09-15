@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DocumentQueryService {
+
   List<Document> handle(GetDocumentsByFolderIdQuery query);
   Optional<Document> handle(GetDocumentByIdQuery query);
   List<Document> handle(GetAllDocumentsQuery query);
+
 }

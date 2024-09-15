@@ -6,7 +6,9 @@ import com.deltatech.diligencetech.platform.duediligenceprocess.domain.model.ent
 import java.util.Optional;
 
 public interface DocumentCommandService {
+
   Long handle(CreateDocumentCommand command);
   Optional<Document> handle(UpdateDocumentCommand command);
   void handle(DeleteDocumentCommand command);
+
 }

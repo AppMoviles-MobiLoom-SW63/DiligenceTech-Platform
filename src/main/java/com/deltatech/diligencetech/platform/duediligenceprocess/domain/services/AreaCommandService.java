@@ -7,6 +7,8 @@ import com.deltatech.diligencetech.platform.duediligenceprocess.domain.model.com
 import java.util.Optional;
 
 public interface AreaCommandService {
+
   Long handle(CreateAreaCommand command);
   Optional<Area> handle(UpdateAreaNameCommand command);
+
 }
