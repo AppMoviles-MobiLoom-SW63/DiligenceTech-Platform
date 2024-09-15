@@ -4,6 +4,7 @@ import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.
 import com.deltatech.diligencetech.platform.duediligencemanagement.interfaces.rest.resources.CreateProjectResource;
 
 public class CreateProjectCommandFromResourceAssembler {
+
     public static CreateInactiveProjectCommand toCommandFromResource(CreateProjectResource resource) {
         return new CreateInactiveProjectCommand(resource.name(), resource.agentsUsernames(), resource.agentsRoles());
     }

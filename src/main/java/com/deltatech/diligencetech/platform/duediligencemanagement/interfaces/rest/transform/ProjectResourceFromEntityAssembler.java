@@ -4,6 +4,7 @@ import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.
 import com.deltatech.diligencetech.platform.duediligencemanagement.interfaces.rest.resources.ProjectResource;
 
 public class ProjectResourceFromEntityAssembler {
+    
     public static ProjectResource toResourceFromEntity(Project entity) {
         return new ProjectResource(entity.getId(), entity.getName());
     }

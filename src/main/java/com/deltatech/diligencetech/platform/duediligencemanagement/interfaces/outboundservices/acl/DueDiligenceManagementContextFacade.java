@@ -11,6 +11,7 @@ import java.util.ArrayList;
 @Service
 
 public class DueDiligenceManagementContextFacade {
+
   private final ProjectQueryService projectQueryService;
 
   public DueDiligenceManagementContextFacade(ProjectQueryService projectQueryService) {
@@ -23,10 +24,12 @@ public class DueDiligenceManagementContextFacade {
    * @param projectId the code
    * @return the agent id
    */
+
   public Long fetchProjectIdById(Long projectId) {
     var getProjectByIdQuery = new GetProjectByIdQuery(projectId);
     var project = projectQueryService.handle(getProjectByIdQuery);
     if (project.isEmpty()) return 0L;
     return project.get().getId();
   }
+
 }

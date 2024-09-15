@@ -19,6 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = "/api/v1/due-diligence-projects", produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Due Diligence Projects", description = "Due Diligence Management Endpoints")
 public class ProjectController {
+
     private final ProjectCommandService projectCommandService;
     private final ProjectQueryService projectQueryService;
 
@@ -61,4 +62,5 @@ public class ProjectController {
         var dueDiligenceProjectResources = dueDiligenceProjects.stream().map(ProjectResourceFromEntityAssembler::toResourceFromEntity).toList();
         return ResponseEntity.ok(dueDiligenceProjectResources);
     }
+
 }
