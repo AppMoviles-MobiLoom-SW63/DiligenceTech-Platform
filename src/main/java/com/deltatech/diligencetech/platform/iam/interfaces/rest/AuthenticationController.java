@@ -2,8 +2,12 @@ package com.deltatech.diligencetech.platform.iam.interfaces.rest;
 
 import com.deltatech.diligencetech.platform.iam.application.internal.outboundservices.acl.IamExternalsService;
 import com.deltatech.diligencetech.platform.iam.domain.services.UserCommandService;
+import com.deltatech.diligencetech.platform.iam.interfaces.rest.resources.AuthenticatedUserResource;
+import com.deltatech.diligencetech.platform.iam.interfaces.rest.resources.SignInResource;
 import com.deltatech.diligencetech.platform.iam.interfaces.rest.resources.SignUpResource;
 import com.deltatech.diligencetech.platform.iam.interfaces.rest.resources.UserResource;
+import com.deltatech.diligencetech.platform.iam.interfaces.rest.transform.AuthenticatedUserResourceFromEntityAssembler;
+import com.deltatech.diligencetech.platform.iam.interfaces.rest.transform.SignInCommandFromResourceAssembler;
 import com.deltatech.diligencetech.platform.iam.interfaces.rest.transform.SignUpCommandFromResourceAssembler;
 import com.deltatech.diligencetech.platform.iam.interfaces.rest.transform.UserResourceFromEntityAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +32,6 @@ public class AuthenticationController {
         this.externalAgentIamService = externalAgentIamService;
     }
 
-    /*
     @PostMapping("/sign-in")
     public ResponseEntity<AuthenticatedUserResource> signIn(@RequestBody SignInResource resource) {
         var signInCommand = SignInCommandFromResourceAssembler.fromResource(resource);
@@ -36,11 +39,9 @@ public class AuthenticationController {
         if (authenticatedUser.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        var authenticatedProfileUsername = externalAgentIamService.fetchAgentUsernameByEmail(authenticatedUser.get().getLeft().getEmail());
-        var authenticatedUserResource = AuthenticatedUserResourceFromEntityAssembler.toResourceFromEntity(authenticatedUser.get().getLeft(), authenticatedUser.get().getRight(), authenticatedProfileUsername);
+        var authenticatedUserResource = AuthenticatedUserResourceFromEntityAssembler.toResourceFromEntity(authenticatedUser.get().getLeft(), authenticatedUser.get().getRight(), authenticatedUser.get().getLeft().getUsername());
         return ResponseEntity.ok(authenticatedUserResource);
     }
-     */
 
     @PostMapping("/sign-up")
     public ResponseEntity<UserResource> signUp(@RequestBody SignUpResource resource) {
