@@ -5,6 +5,7 @@ import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetAllProjectMembersByProjectId;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetAllProjectsQuery;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetProjectByIdQuery;
+import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetProjectsByUsernameQuery;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +14,5 @@ public interface ProjectQueryService {
     Optional<Project> handle(GetProjectByIdQuery query);
     List<Project> handle(GetAllProjectsQuery query);
     List<Member> handle(GetAllProjectMembersByProjectId query);
+    List<Project> handle(GetProjectsByUsernameQuery query);
 }

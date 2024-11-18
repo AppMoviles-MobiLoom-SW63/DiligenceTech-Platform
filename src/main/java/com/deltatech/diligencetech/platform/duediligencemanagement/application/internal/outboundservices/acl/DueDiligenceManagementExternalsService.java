@@ -19,4 +19,8 @@ public class DueDiligenceManagementExternalsService {
   public List<Long> fetchAgentsIdByUsernames(List<String> usernames) {
     return iamContextFacade.fetchUsersIdByUsernames(usernames);
   }
+
+  public Optional<Long> fetchUserIdByUsername(String username) {
+    return iamContextFacade.fetchUserByUsername(username);
+  }
 }

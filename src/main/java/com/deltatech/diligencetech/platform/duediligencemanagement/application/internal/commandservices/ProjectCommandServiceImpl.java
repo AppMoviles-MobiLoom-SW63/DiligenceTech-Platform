@@ -5,9 +5,11 @@ import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.commands.ActivateProjectCommand;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.commands.CreateInactiveProjectCommand;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.entities.Member;
+import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.valueobjects.DueDiligenceRole;
 import com.deltatech.diligencetech.platform.duediligencemanagement.infrastructure.persistence.jpa.repositories.MemberRepository;
 import com.deltatech.diligencetech.platform.duediligencemanagement.infrastructure.persistence.jpa.repositories.ProjectRepository;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.services.ProjectCommandService;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,14 +35,19 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
         var project = new Project(command.name());
         // get agentsId
         var members = new ArrayList<Member>(emptyList());
+        // only fail spot
         var agentsId = dueDiligenceManagementExternalsService.fetchAgentsIdByUsernames(command.agentsUsernames());
+        /*
         // check all agentsId are valid
         if (agentsId.size() != command.agentsUsernames().size()) {
             throw new IllegalArgumentException("Some agents are invalid");
         }
+         */
+
         // try saving each agentsId
         agentsId.forEach(agentId -> {
             members.add(new Member(agentId, project));
+            members.getLast().setAgentRole(command.agentsRoles().get(agentsId.indexOf(agentId)) ? DueDiligenceRole.BUY_SIDE : DueDiligenceRole.SELL_SIDE);
             project.addMember(members.getLast());
         });
         try {
@@ -48,12 +55,14 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
         } catch (Exception e) {
             throw new IllegalArgumentException("Error saving project");
         }
+        /*
         try {
             memberRepository.saveAll(members);
         } catch (Exception e) {
             projectRepository.delete(project);
             throw new IllegalArgumentException("Error saving members");
         }
+         */
         return Optional.of(project.getId());
     }
 

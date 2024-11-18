@@ -5,6 +5,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
@@ -17,4 +18,7 @@ public class MembersList {
         this.members.add(member);
     }
 
+    public MembersList() {
+        this.members = new ArrayList<>();
+    }
 }

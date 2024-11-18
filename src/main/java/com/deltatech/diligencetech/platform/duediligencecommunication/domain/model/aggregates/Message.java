@@ -18,14 +18,22 @@ public class Message extends AuditableAbstractAggregateRoot<Message> {
     private Long userId;
 
     @Column
+    private Long destinationUserId;
+
+    @Column
+    private String subject;
+
+    @Column
     private String message;
 
     public Message() {
     }
 
-    public Message(CreateMessageCommand command){
+    public Message(CreateMessageCommand command, Long destinationUserId) {
         this.projectId = command.projectId();
         this.userId = command.userId();
+        this.destinationUserId = destinationUserId;
+        this.subject = command.subject();
         this.message = command.message();
     }
 

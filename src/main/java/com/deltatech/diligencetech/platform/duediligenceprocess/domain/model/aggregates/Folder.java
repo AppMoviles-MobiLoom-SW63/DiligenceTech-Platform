@@ -29,8 +29,6 @@ public class Folder extends AuditableAbstractAggregateRoot<Folder> {
     @Getter
     private String name;
 
-
-
     @ManyToOne
     @Getter
     @JoinColumn(name = "area_id")

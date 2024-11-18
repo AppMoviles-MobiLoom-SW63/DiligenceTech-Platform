@@ -5,6 +5,6 @@ import com.deltatech.diligencetech.platform.duediligencecommunication.interfaces
 
 public class CreateMessageCommandFromResourceAssembler {
     public static CreateMessageCommand toCommandFromResource(CreateMessageResource resource){
-        return new CreateMessageCommand(resource.projectId(), resource.userId(), resource.message());
+        return new CreateMessageCommand(resource.projectId(), resource.userId(), resource.destinationUsername(), resource.subject(), resource.message());
     }
 }

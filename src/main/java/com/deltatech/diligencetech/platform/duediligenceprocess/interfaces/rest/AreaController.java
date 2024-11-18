@@ -68,6 +68,14 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
       return ResponseEntity.ok(areaResource);
     }
 
+    @GetMapping("/get-id/{areaId}")
+    public ResponseEntity<AreaResource> getAreaById(@PathVariable Long areaId) {
+      var getAreaByIdQuery = new GetAreaByIdQuery(areaId);
+      var area = areaQueryService.handle(getAreaByIdQuery);
+      if (area.isEmpty()) return ResponseEntity.badRequest().build();
+      var areaResource = AreaResourceFromEntityAssembler.toResourceFromEntity(area.get());
+      return ResponseEntity.ok(areaResource);
+    }
 
     /**
      * Gets all the courses.

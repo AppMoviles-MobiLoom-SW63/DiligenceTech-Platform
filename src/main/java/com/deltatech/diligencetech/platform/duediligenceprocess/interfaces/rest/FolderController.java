@@ -72,6 +72,14 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
       return ResponseEntity.ok(folderResource);
     }
 
+    @GetMapping("/get-id/{folderId}")
+    public ResponseEntity<FolderResource> getfolderById(@PathVariable Long folderId) {
+      var getfolderByIdQuery = new GetFolderByIdQuery(folderId);
+      var folder = folderQueryService.handle(getfolderByIdQuery);
+      if (folder.isEmpty()) return ResponseEntity.badRequest().build();
+      var folderResource = FolderResourceFromEntityAssembler.toResourceFromEntity(folder.get());
+      return ResponseEntity.ok(folderResource);
+    }
 
     /**
      * Gets all the courses.

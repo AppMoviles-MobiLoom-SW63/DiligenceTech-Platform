@@ -29,7 +29,7 @@ public class Profile extends AuditableAbstractAggregateRoot<Profile> {
     public Profile(CreateProfileCommand command) {
         this.agentId = command.userId();
         this.username = command.username();
-        this.name = command.firstName() + command.lastName();
+        this.name = command.firstName() + " " + command.lastName();
         this.email = command.username();
         this.enterprise = "";
     }

@@ -2,4 +2,4 @@ package com.deltatech.diligencetech.platform.duediligencecommunication.interface
 
 import java.util.Date;
 
-public record MessageResource(Long id, Long projectId, Long userId, String message, Date createdAt) {}
+public record MessageResource(Long id, Long projectId, Long userId, Long destinationUserId, String subject, String message, Date createdAt) {}

@@ -1,6 +1,7 @@
 package com.deltatech.diligencetech.platform.iam.interfaces.rest;
 
 import com.deltatech.diligencetech.platform.iam.domain.model.queries.GetAllUsersQuery;
+import com.deltatech.diligencetech.platform.iam.domain.model.queries.GetUserByEmailQuery;
 import com.deltatech.diligencetech.platform.iam.domain.model.queries.GetUserByIdQuery;
 import com.deltatech.diligencetech.platform.iam.domain.services.UserQueryService;
 import com.deltatech.diligencetech.platform.iam.interfaces.rest.resources.UserResource;
@@ -37,6 +38,17 @@ public class UsersController {
     public ResponseEntity<UserResource> getUserById(@PathVariable Long userId) {
         var getUserByIdQuery = new GetUserByIdQuery(userId);
         var user = userQueryService.handle(getUserByIdQuery);
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
+        return ResponseEntity.ok(userResource);
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserResource> getUserByEmail(@PathVariable String email) {
+        var getUserByEmailQuery = new GetUserByEmailQuery(email);
+        var user = userQueryService.handle(getUserByEmailQuery);
         if (user.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

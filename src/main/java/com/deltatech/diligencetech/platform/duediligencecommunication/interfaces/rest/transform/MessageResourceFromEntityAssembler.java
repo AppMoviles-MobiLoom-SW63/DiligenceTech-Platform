@@ -5,6 +5,6 @@ import com.deltatech.diligencetech.platform.duediligencecommunication.interfaces
 
 public class MessageResourceFromEntityAssembler {
     public static MessageResource toResourceFromEntity(Message entity) {
-        return new MessageResource(entity.getId(), entity.getProjectId(), entity.getUserId(), entity.getMessage(), entity.getCreatedAt());
+        return new MessageResource(entity.getId(), entity.getProjectId(), entity.getUserId(), entity.getDestinationUserId(), entity.getSubject(), entity.getMessage(), entity.getCreatedAt());
     }
 }
