@@ -1,8 +1,7 @@
 package com.deltatech.diligencetech.platform.duediligencemanagement.interfaces.rest;
 
-import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetAllProjectsQuery;
-import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetProjectByIdQuery;
-import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetProjectsByUsernameQuery;
+import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.commands.DeactivateProjectCommand;
+import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.*;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.services.ProjectCommandService;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.services.ProjectQueryService;
 import com.deltatech.diligencetech.platform.duediligencemanagement.interfaces.rest.resources.*;
@@ -56,6 +55,22 @@ public class ProjectController {
         return ResponseEntity.ok(dueDiligenceProjectResources);
     }
 
+    @GetMapping("/user/complete/{username}")
+    public ResponseEntity<List<ProjectResource>> getCompletedDueDiligenceProjectsByUsername(@PathVariable String username) {
+        var getDueDiligenceProjectsByUserIdQuery = new GetActiveProjectsByUsernameQuery(username);
+        var dueDiligenceProjects = projectQueryService.handle(getDueDiligenceProjectsByUserIdQuery);
+        var dueDiligenceProjectResources = dueDiligenceProjects.stream().map(ProjectResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(dueDiligenceProjectResources);
+    }
+
+    @GetMapping("/user/active/{username}")
+    public ResponseEntity<List<ProjectResource>> getActiveDueDiligenceProjectsByUsername(@PathVariable String username) {
+        var getDueDiligenceProjectsByUserIdQuery = new GetCompleteProjectsByUsernameQuery(username);
+        var dueDiligenceProjects = projectQueryService.handle(getDueDiligenceProjectsByUserIdQuery);
+        var dueDiligenceProjectResources = dueDiligenceProjects.stream().map(ProjectResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(dueDiligenceProjectResources);
+    }
+
     @GetMapping("/{projectId}")
     public ResponseEntity<ProjectResource> getDueDiligenceProjectById(@PathVariable Long projectId) {
         var getDueDiligenceProjectByIdQuery = new GetProjectByIdQuery(projectId);
@@ -73,6 +88,13 @@ public class ProjectController {
         var dueDiligenceProjects = projectQueryService.handle(getAllDueDiligenceProjectsQuery);
         var dueDiligenceProjectResources = dueDiligenceProjects.stream().map(ProjectResourceFromEntityAssembler::toResourceFromEntity).toList();
         return ResponseEntity.ok(dueDiligenceProjectResources);
+    }
+
+    @PutMapping("/complete-deactivate/{projectId}")
+    public ResponseEntity<Void> deactivateDueDiligenceProject(@PathVariable Long projectId) {
+        var deactivateDueDiligenceProjectCommand = new DeactivateProjectCommand(projectId);
+        projectCommandService.handle(deactivateDueDiligenceProjectCommand);
+        return ResponseEntity.ok().build();
     }
 
 }

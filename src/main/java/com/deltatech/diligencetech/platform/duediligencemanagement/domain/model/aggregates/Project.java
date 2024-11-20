@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Project extends AuditableAbstractAggregateRoot<Project> {
     private DueDiligenceStatus buyStatus;
 
     @Column
+    @Setter
     private Boolean active;
 
     @Embedded

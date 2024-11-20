@@ -4,6 +4,7 @@ import com.deltatech.diligencetech.platform.duediligencemanagement.application.i
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.aggregates.Project;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.commands.ActivateProjectCommand;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.commands.CreateInactiveProjectCommand;
+import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.commands.DeactivateProjectCommand;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.entities.Member;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.valueobjects.DueDiligenceRole;
 import com.deltatech.diligencetech.platform.duediligencemanagement.infrastructure.persistence.jpa.repositories.MemberRepository;
@@ -64,6 +65,13 @@ public class ProjectCommandServiceImpl implements ProjectCommandService {
         }
          */
         return Optional.of(project.getId());
+    }
+
+    @Override
+    public void handle(DeactivateProjectCommand command) {
+        var project = projectRepository.findById(command.projectId()).orElseThrow(() -> new IllegalArgumentException("Project not found"));
+        project.setActive(true);
+        projectRepository.save(project);
     }
 
     @Override

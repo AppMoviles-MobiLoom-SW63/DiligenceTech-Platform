@@ -3,10 +3,7 @@ package com.deltatech.diligencetech.platform.duediligencemanagement.application.
 import com.deltatech.diligencetech.platform.duediligencemanagement.application.internal.outboundservices.acl.DueDiligenceManagementExternalsService;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.aggregates.Project;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.entities.Member;
-import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetAllProjectMembersByProjectId;
-import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetAllProjectsQuery;
-import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetProjectByIdQuery;
-import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.GetProjectsByUsernameQuery;
+import com.deltatech.diligencetech.platform.duediligencemanagement.domain.model.queries.*;
 import com.deltatech.diligencetech.platform.duediligencemanagement.domain.services.ProjectQueryService;
 import com.deltatech.diligencetech.platform.duediligencemanagement.infrastructure.persistence.jpa.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
@@ -50,5 +47,23 @@ public class ProjectQueryServiceImpl implements ProjectQueryService {
             return Collections.emptyList();
         }
         return projectRepository.findAllByMembersSpecificUserId(userId.get());
+    }
+
+    @Override
+    public List<Project> handle(GetActiveProjectsByUsernameQuery query) {
+        var userId = dueDiligenceManagementExternalsService.fetchUserIdByUsername(query.username());
+        if (userId.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return projectRepository.findAllActiveByMembersSpecificUserId(userId.get());
+    }
+
+    @Override
+    public List<Project> handle(GetCompleteProjectsByUsernameQuery query) {
+        var userId = dueDiligenceManagementExternalsService.fetchUserIdByUsername(query.username());
+        if (userId.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return projectRepository.findAllCompleteByMembersSpecificUserId(userId.get());
     }
 }

@@ -14,4 +14,10 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query("SELECT DISTINCT a FROM Project a JOIN a.membersList.members b WHERE b.userId = :value")
     List<Project> findAllByMembersSpecificUserId(@Param("value") Long userId);
+
+    @Query("SELECT DISTINCT a FROM Project a JOIN a.membersList.members b WHERE b.userId = :value AND a.active = true")
+    List<Project> findAllActiveByMembersSpecificUserId(@Param("value") Long userId);
+
+    @Query("SELECT DISTINCT a FROM Project a JOIN a.membersList.members b WHERE b.userId = :value AND a.active = false")
+    List<Project> findAllCompleteByMembersSpecificUserId(@Param("value") Long userId);
 }
